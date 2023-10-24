@@ -1,5 +1,5 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
-import { headers, cookies } from "next/headers"
+import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { stripe } from "@/libs/stripe"
@@ -36,11 +36,12 @@ export async function POST(
             mode: 'subscription',
             allow_promotion_codes: true,
             subscription_data: {
+                // @ts-ignore
                 trial_from_plan: true,
                 metadata
             },
             success_url: `${getURL()}/account`,
-            cancel_url: `${getURL()}`
+            cancel_url: `${getURL()}/`
         });
 
         return NextResponse.json({ sessionId: session.id });
